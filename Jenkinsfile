@@ -1,18 +1,25 @@
 pipeline {
     agent any
+
     tools {
-    maven 'Maven 3.9.6'  // This name must match what you just configured
+        maven 'Maven 3.8.6'   // Ensure this name matches the one in Global Tool Configuration
+        jdk 'JDK 21'          // Same here
     }
+
+    environment {
+        PATH = "${tool 'Maven 3.8.6'}/bin:${env.PATH}"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/SrikartikMateti/FullStack-1.git'
+                git url: 'https://github.com/SrikartikMateti/FullStack-1.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean install'
             }
         }
 
@@ -21,31 +28,14 @@ pipeline {
                 sh 'mvn test'
             }
         }
-
-        stage('Package WAR') {
-            steps {
-                sh 'mvn package -DskipTests'
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
-            }
-        }
     }
 
     post {
-        always {
-            echo 'Cleaning up...'
-            // Optional: remove if no test reports yet
-            junit 'target/surefire-reports/*.xml'
-        }
         success {
-            echo 'Build successful!'
+            echo 'Build and tests succeeded!'
         }
         failure {
-            echo 'Build failed.'
+            echo 'Build or tests failed.'
         }
     }
 }
