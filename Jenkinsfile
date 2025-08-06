@@ -35,6 +35,14 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
+        stage('Debug Git Info') {
+            steps {
+                sh 'git status'
+                sh 'git branch -a'
+                sh 'ls -l'
+            }
+        }
+
     }
 
     post {
