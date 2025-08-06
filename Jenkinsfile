@@ -2,12 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.8.6'   // Ensure this name matches the one in Global Tool Configuration
-        jdk 'JDK 21'          // Same here
-    }
-
-    environment {
-        PATH = "${tool 'Maven 3.8.6'}/bin:${env.PATH}"
+        maven 'Maven_3.8.6'
+        jdk 'jdk17'
     }
 
     stages {
@@ -19,23 +15,23 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
     }
 
     post {
-        success {
-            echo 'Build and tests succeeded!'
-        }
         failure {
             echo 'Build or tests failed.'
+        }
+        success {
+            echo 'Build and tests succeeded.'
         }
     }
 }
