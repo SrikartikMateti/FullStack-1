@@ -7,11 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/SrikartikMateti/FullStack-1.git', branch: 'main'
-            }
-        }
+    
 
         stage('Build') {
             steps {
