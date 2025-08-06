@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven 3.8.6'     // Make sure this name matches Jenkins -> Global Tool Configuration
-        jdk 'JDK 21'            // Ensure JDK 21 is configured on Jenkins
-    }
-
     environment {
         MAVEN_OPTS = "-Dmaven.test.failure.ignore=true"
     }
@@ -13,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://your.repo.url/demo.git'
+                git 'https://github.com/SrikartikMateti/FullStack-1.git'
             }
         }
 
