@@ -1,14 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        MAVEN_OPTS = "-Dmaven.test.failure.ignore=true"
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/SrikartikMateti/FullStack-1.git'
+                git branch: 'main', url: 'https://github.com/SrikartikMateti/FullStack-1.git'
             }
         }
 
@@ -35,25 +31,19 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
-        stage('Debug Git Info') {
-            steps {
-                sh 'git status'
-                sh 'git branch -a'
-                sh 'ls -l'
-            }
-        }
-
     }
 
     post {
         always {
+            echo 'Cleaning up...'
+            // Optional: remove if no test reports yet
             junit 'target/surefire-reports/*.xml'
+        }
+        success {
+            echo 'Build successful!'
         }
         failure {
             echo 'Build failed.'
-        }
-        success {
-            echo 'Build succeeded.'
         }
     }
 }
