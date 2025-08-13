@@ -42,9 +42,10 @@ pipeline {
         stage('Run (Optional)') {
             steps {
                 echo 'Starting Spring Boot Application...'
-                bat 'java -jar target/*.jar'
-            }
+                bat 'java -jar target/*.war'
+             }
         }
+
     }
 
     post {
