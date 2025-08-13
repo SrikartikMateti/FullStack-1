@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.8.6'   // Match the exact Maven name in Jenkins
-        jdk 'JDK 21'          // Match the exact JDK name in Jenkins
+        maven 'Maven 3.8.6'   // Exact Maven name in Jenkins
+        jdk 'JDK 21'          // Exact JDK name in Jenkins
     }
 
     stages {
@@ -39,15 +39,16 @@ pipeline {
 
         stage('Run (Optional)') {
             steps {
-                echo 'Starting Spring Boot Application...'
-                // Run the WAR file on Windows without wildcard issue
+                echo 'Starting Spring Boot Application on port 9090...'
                 bat '''
                 for %%f in (target\\*.war) do (
-                    echo Running %%f
-                    java -jar "%%f"
+                    echo Running %%f on port 9090
+                    java -jar "%%f" --server.port=9090
                     exit /b !errorlevel!
                 )
                 '''
+                echo 'Waiting for application to start...'
+                sleep(time: 5, unit: 'SECONDS')
             }
         }
     }
@@ -58,6 +59,7 @@ pipeline {
         }
         success {
             echo '✅ Build and tests succeeded.'
+            echo '🌐 Access the app at http://localhost:9090'
         }
     }
 }
