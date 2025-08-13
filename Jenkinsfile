@@ -31,11 +31,12 @@ pipeline {
             }
         }
 
-        stage('Archive Artifact') {
+       stage('Archive Artifact') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
-        }
+       }
+
 
         // Optional: Run the Spring Boot app for verification
         stage('Run (Optional)') {
